@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fiture.dao.FollowMapper" >
+  <resultMap id="BaseResultMap" type="com.fiture.entity.Follow" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <id column="isFollowedId" property="isfollowedid" jdbcType="INTEGER" />
+    <result column="isFollowed" property="isfollowed" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, isFollowedId, isFollowed
+  </sql>
+  <select id="findAllFollows" resultMap="BaseResultMap" >
+    select * from follow
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.fiture.entity.FollowKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from follow
+    where userId = #{userid,jdbcType=INTEGER}
+      and isFollowedId = #{isfollowedid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.fiture.entity.FollowKey" >
+    delete from follow
+    where userId = #{userid,jdbcType=INTEGER}
+      and isFollowedId = #{isfollowedid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fiture.entity.Follow" >
+    insert into follow (userId, isFollowedId, isFollowed
+      )
+    values (#{userid,jdbcType=INTEGER}, #{isfollowedid,jdbcType=INTEGER}, #{isfollowed,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiture.entity.Follow" >
+    insert into follow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="isfollowedid != null" >
+        isFollowedId,
+      </if>
+      <if test="isfollowed != null" >
+        isFollowed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="isfollowedid != null" >
+        #{isfollowedid,jdbcType=INTEGER},
+      </if>
+      <if test="isfollowed != null" >
+        #{isfollowed,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiture.entity.Follow" >
+    update follow
+    <set >
+      <if test="isfollowed != null" >
+        isFollowed = #{isfollowed,jdbcType=BIT},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+      and isFollowedId = #{isfollowedid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiture.entity.Follow" >
+    update follow
+    set isFollowed = #{isfollowed,jdbcType=BIT}
+    where userId = #{userid,jdbcType=INTEGER}
+      and isFollowedId = #{isfollowedid,jdbcType=INTEGER}
+  </update>
+</mapper>

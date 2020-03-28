@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fiture.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.fiture.entity.Comment" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <id column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="fitureId" property="fitureid" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, time, fitureId, content
+  </sql>
+  <select id="findAllComments" resultMap="BaseResultMap" >
+    select * from comment
+    where fitureId = #{fitureid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.fiture.entity.CommentKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where userId = #{userid,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.fiture.entity.CommentKey" >
+    delete from comment
+    where userId = #{userid,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </delete>
+  <insert id="insert" parameterType="com.fiture.entity.Comment" >
+    insert into comment (userId, time, fitureId, 
+      content)
+    values (#{userid,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{fitureid,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiture.entity.Comment" >
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="fitureid != null" >
+        fitureId,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fitureid != null" >
+        #{fitureid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiture.entity.Comment" >
+    update comment
+    <set >
+      <if test="fitureid != null" >
+        fitureId = #{fitureid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiture.entity.Comment" >
+    update comment
+    set fitureId = #{fitureid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </update>
+</mapper>

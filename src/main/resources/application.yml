@@ -1,0 +1,32 @@
+server:
+  port: 9888
+
+eureka:
+  client:
+    serviceurl:
+      defaultZone: http://47.100.32.92:8761/eureka
+spring:
+  application:
+    name: FitureService
+  servlet:
+    multipart: #配置文件上传
+      max-file-size: 1000MB #设置上传的单个文件最大值，单位可以是 MB、KB，默认为 1MB
+      max-request-size: 1024MB #设置多文件上传时，单次内多个文件的总量的最大值，单位可以是 MB、KB，默认为 10 M
+  datasource:
+    name: base
+    url: jdbc:mysql://47.101.141.121:3306/fiture?serverTimezone=Hongkong
+    username: root
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
+  activemq:
+    broker-url: tcp://47.100.32.92:61616
+    user: admin
+    password: admin
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.fiture.entity  # 注意：对应实体类的路径
+
+uploadFile:
+  resourceHandler: /uploadFiles/**   #请求 url 中的资源映射
+  location: E:/wmx/picture #自定义上传文件本地保存路径
